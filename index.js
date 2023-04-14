@@ -2,125 +2,78 @@
 // group scratch off numbers with random card amounts like [15, $5.00]
 
 
-// let n = 3;
-var rndNum = Math.random();
-// produces a random number between 0-.99 to compare against winning probability
-var rndNum_2 = Math.random();
-// produces a random number between 0-.99 to compare against prize winning probability
-var score = [];
+let winningProbability = Math.random();
+let prizeProbability = Math.random();
+let score = [];
 // an array to show win or loss on the card
 
 
 function getWinningCard(n) {
-    if (rndNum <= 1 / n) {
+    if (winningProbability <= 1 / n) {
         let prizeAmount;
-        if (rndNum_2 <= 1 / 10) {
-            score.push("Win");
+        score.push("Win")
+        if (prizeProbability <= 1 / 10) {
             prizeAmount = "$10";
-        }
-        else if (rndNum_2 > 1 / 10 && rndNum_2 <= 3 / 10) {
-            score.push("Win");
+        } else if (1 / 10 < prizeProbability <= 3 / 10) {
             prizeAmount = "$5";
-        }
-        else if (rndNum_2 > 3 / 10 && rndNum_2 <= 6 / 10) {
-            score.push("Win");
+        } else if (3 / 10 < prizeProbability <= 6 / 10) {
             prizeAmount = "$3";
-        }
-        // this last else if is not needed. a else would sufficient but just showing the pr is 40% to win $2 on a winning card 
-        else if (rndNum_2 > 6 / 10 && rndNum_2 <= 10 / 10) {
-            score.push("Win");
+        } else {
             prizeAmount = "$2";
         }
         return ([score[0], prizeAmount]);
-    }
-
-    else {
+    } else {
         score.push("Loss")
         return (score[0]);
     }
 
 }
 
-
 console.log(getWinningCard(3))
 
-// score = ["Win"];
-
-var winningNumbers = [];
-var numbers = [];
+let winningNumbers = [];
+let numbersOnCard = [];
 
 function makeCard() {
-    // let pass3 = Math.random();
     // this while loop will generate the winningNumbers array
-    let i = 0;
     while (winningNumbers.length < 4) {
         let rndInt = Math.floor(Math.random() * 50 + 1);
+        // rndInt could be changed 
         if (Boolean(winningNumbers.includes(rndInt)) === false) {
             winningNumbers.push(rndInt);
-            i++
-        }
-        else {
-            i++
         }
     }
 
     if (score[0] === "Win") {
         // the while loop will generate numbers array to scratch off if it is a winning card
-        let j = 0;
-        while (numbers.length < 20) {
+        while (numbersOnCard.length < 20) {
             let rndInt2 = Math.floor(Math.random() * 50 + 1);
-            if (Boolean(numbers.includes(rndInt2)) === true) {
-                j++
-            }
-
-            else if (Boolean(winningNumbers.includes(rndInt2)) === true) {
-                j++
-            }
-
-            // if rndInt2 is in the numbers list or in the winningNumbers then move onto the next iteration
-            else {
-                numbers.push(rndInt2);
-                j++
-
+            if (!Boolean(numbersOnCard.includes(rndInt2)) === true) {
+                numbersOnCard.push(rndInt2);
             }
         }
-        let replace = Math.floor(Math.random() * numbers.length);
+        let replaceNumbersOnCard = Math.floor(Math.random() * numbersOnCard.length);
         // this will give a random index from the numbers array for an element from winningNumbers to replace 
-        let select = Math.floor(Math.random() * winningNumbers.length);
+        let selectWinningNumbers = Math.floor(Math.random() * winningNumbers.length);
         // this will give a random index from the winningNumbers array 
-        numbers[replace] = winningNumbers[select];
+        numbersOnCard[replaceNumbersOnCard] = winningNumbers[selectWinningNumbers];
     }
     else {
         // the while loop will generate numbers array to scratch off since it is not a winning card
-        let j = 0;
-        while (numbers.length < 20) {
+        while (numbersOnCard.length < 20) {
             let rndInt2 = Math.floor(Math.random() * 50 + 1);
-            if (Boolean(numbers.includes(rndInt2)) === true) {
-                j++
-            }
-
-            else if (Boolean(winningNumbers.includes(rndInt2)) === true) {
-                j++
-            }
-
-            // if rndInt2 is in the numbers list or in the winningNumbers then move onto the next iteration since this is a losing card
-            else {
-                numbers.push(rndInt2);
-                j++
-
+            if (!Boolean(numbersOnCard.includes(rndInt2)) === true) {
+                numbersOnCard.push(rndInt2);
             }
         }
 
     }
-    return ([winningNumbers, numbers]);
+    return ([winningNumbers, numbersOnCard]);
 }
 
-
-// makeCard(1);
 console.log(makeCard());
 
-// document.getElementById("winning-numbers").innerHTML = winningNumbers;
-// document.getElementById("numbers").innerHTML = numbers;
+
 
 
 
